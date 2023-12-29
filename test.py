@@ -1,23 +1,23 @@
-class Car:
-    def __init__(self, model='', year=0):
-        self.model = model
-        self.year = year
-        self.speed = 0
+#my_list = [1,2,12,2,34,32,45]
+my_list = [1,2,12,2,34,32,45]
+
+def reversed_list(args):
+    return [args[i] for i in range(len(args)-1,0,-1)]
+
+
+print(reversed_list(my_list))
+
+
+def max_min(unsorted_list):
+    min = unsorted_list[0]
+    max = unsorted_list[0]
     
-    def saveCar(self, model, year):
-        self.model = model
-        self.year = year
-    def increseSpeed(self, accelerate):
-        if(accelerate>0):
-            print(f'speed increased by {accelerate}')
-        else:
-            print(f'Invalid input')
-        self.speed = accelerate
-
-
-car = Car()
-print(car.saveCar('Toyota',2003))
-car.increseSpeed(23)
-print(car.speed)
-print(car.model)
+    for i in range(1, len(unsorted_list)):
+        if max < unsorted_list[i]:
+            max = unsorted_list[i]
+        if min > unsorted_list[i]:
+            min = unsorted_list[i]
+            
+            
+max_min(my_list)
 
