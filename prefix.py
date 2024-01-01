@@ -1,62 +1,105 @@
-operators = ['+','-','*','/','^']
-
-def prefixExpression(userString):
-    
-    user_input = list(userString)
+def infix_to_prefix(infix_expression):
+    precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
+    def less_or_equal_precedence(i, o):
+        return precedence.get(i, 0) <= precedence.get(o, 0)
+    def is_operator(c):
+        return c in precedence
+    def not_greater(i, o):
+        try:
+            a = precedence[i]
+            b = precedence[o]
+            return True if a <= b else False
+        except KeyError:
+            return False
+    def is_operand(ch):
+        return ch.isalnum()
     stack = []
-    expression = []
-
-    for char in user_input:
-        if char in operators:
-            expression.append(char)
+    prefix = ''
+    # Reverse infix expression
+    infix_expression = infix_expression[::-1]
+    # Replace '(' with ')' and vice versa
+    infix_expression = ''.join(['(' if c == ')' else ')' if c == '(' else c
+                                for c in infix_expression])
+    print(infix_expression)
+    
+    for c in infix_expression:
+        print('character ',c)
+        if is_operand(c):
+            prefix += c
+        elif c == '(':
+            stack.append(c)
+        elif c == ')':
+            while stack and stack[-1] != '(':
+                prefix += stack.pop()
+            stack.pop()
         else:
-            stack.append(char)
+            while (stack and not_greater(c, stack[-1])):
+                prefix += stack.pop()
+            stack.append(c)
+            
+    while stack:
+        prefix += stack.pop()
+    # Reverse prefix expression
+  
+    prefix = prefix[::-1]
+    return prefix
 
-    return ('').join(expression) + ('').join(stack)
+# Test case
+infix_expression = "a+b*(c^d-e)^(f+g*h)-i"
+prefix_expression = infix_to_prefix(infix_expression)
+print("Infix:", infix_expression)
+print("Prefix:", prefix_expression)
 
 
-# print(prefixExpression(input('Enter the expression we want the prefix expression for\n')))
+# infix_expression = "a+(g^b-i/h*c^d)-f"
+# prefix_expression = infix_to_prefix(infix_expression)
+# print("Infix:", infix_expression)
+# print("Prefix:", prefix_expression)
 
-# # (a+b)*(c+d)
+# infix_expression = "(a*b)+(c*d)"
+# prefix_expression = infix_to_prefix(infix_expression)
+# print("Infix:", infix_expression)
+# print("Prefix:", prefix_expression)
 
+def infix_to_postfix(infix_expression):
+    precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
+    def is_operand(ch):
+        return ch.isalnum()
+    def is_operator(c):
+        return c in precedence
+    def not_less(i, o):
+        try:
+            a = precedence[i]
+            b = precedence[o]
+            return a >= b
+        except KeyError:
+            return False
 
-# # (+ab)*(+cd)
-# # *(+ab)(+cd)
-
-
-def reverseString(str):
     stack = []
-    for char in str:
-        if char == ')':
-            stack.append('(')
-        elif char == '(':
-            stack.append(')')
-        else: 
-            stack.append(char)
+    postfix = ''
+    for c in infix_expression:
+        if is_operand(c):
+            postfix += c
+        elif c == '(':
+            stack.append(c)
+        elif c == ')':
+            while stack and stack[-1] != '(':
+                postfix += stack.pop()
+            stack.pop()
+        else:
+            while stack and is_operator(stack[-1]) and not_less(c, stack[-1]):
+                postfix += stack.pop()
+            stack.append(c)
+    while stack:
+        postfix += stack.pop()
+    return postfix
 
-    return ''.join(stack[::-1])
+infix_expression = "(a*b)+(c*d)"
+prefix_expression = infix_to_postfix(infix_expression)
+print("Infix:", infix_expression)
+print("Postfix:", prefix_expression)
 
-def infixToPrefix(str = reverseString(input(f'\nEnter the infix string\n'))):
-    
-    stack = []
-    operands = ['+','-','/','*','^']
-    prefixString = ''
-    for char in str:
-        if char not in operands:
-            stack.append(char)
-            print(stack)
-        if char in operands:
-            prefixString += char
-            print(prefixString)
-        
-    print(prefixString + ''.join(stack[::-1]))
-
-# infixToPrefix()
-
-
-dict = {}
-i = 0 
-while i<5:
-    dict[input("Enter the keys")] = i
-    i +=1
-print(dict)
+infix_expression = "a+b*(c^d-e)^(f+g*h)-i"
+prefix_expression = infix_to_postfix(infix_expression)
+print("Infix:", infix_expression)
+print("Postfix:", prefix_expression)
