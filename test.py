@@ -41,3 +41,4 @@ def infix_to_prefix(expresssion):
     return prefix[::-1]
 
 print(infix_to_prefix("a+b*(c^d-e)^(f+g*h)-i"))
+print(infix_to_prefix("(a*b)+(c*d)"))
