@@ -75,4 +75,7 @@ def dfs(graph, current, visitedArray):
 bfs(6)
 
 visited_array = [False for i in range(7)]
-dfs(graph, 0, visited_array)
+verticesCout = 6
+for i in range(verticesCout):
+    if visited_array[i] == False:
+        dfs(graph, i, visited_array)
